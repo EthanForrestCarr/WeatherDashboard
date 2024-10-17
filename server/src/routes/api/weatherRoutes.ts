@@ -11,8 +11,7 @@ router.post('/', (req, _res) => {
   router.get('/weather/:city', async (req, res) => {
     try {
       const city = req.params.city;
-      const cityCode = await WeatherService.convertCityNameToCode(city);
-      const events = await WeatherService.getClosestEventByCity(cityCode);
+      const cityCode = await WeatherService.getWeatherForCity(city);
       if (typeof events === 'string') {
         res.status(404).json({ message: 'No events found' });
       } else {
@@ -26,15 +25,10 @@ router.post('/', (req, _res) => {
   // TODO: save city to search history
   router.get('/:city', async (req, res) => {
     try {
-      const cityName = req.params.city;
-      const cityCode = await HistoryService.convertCityNameToCode(cityName);
-      const history = await HistoryService.getHistoryByState(cityCode);
-      //ensures saved data has proper casing regardless of input
-      const sanitizedStateName = await HistoryService.convertCityCodeToName(
-        cityCode
-      );
-      await HistoryService.addCity(sanitizedStateName);
-      res.json(history);
+      const city: string = req.params.city;
+      const data = await HistoryService.getWeatherForCity(city);
+      await HistoryService.addCity(city);
+      res.json(data);
     } catch (err) {
       console.log(err);
       res.status(500).json(err);

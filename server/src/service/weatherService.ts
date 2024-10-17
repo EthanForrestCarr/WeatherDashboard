@@ -28,9 +28,9 @@ class WeatherService {
 
   // TODO: Define the baseURL, API key, and city name properties
 
-  baseURL: string = "api.openweathermap.org/data/2.5/forecast";
-  appid: string = "ea5390020b1d0c4faf5c4b067e2d21d1";
-  city: string = "{city}";
+  baseURL: string = "api.openweathermap.org";
+  appid: string = process.env.API_KEY || "";
+  city: string = "";
 
   // TODO: Create fetchLocationData method
   
@@ -48,16 +48,16 @@ class WeatherService {
   }
 
   // TODO: Create buildGeocodeQuery method
-// VERY BROKEN
   private buildGeocodeQuery(query: string): string {
-    return query //`${this.baseURL}?lat=${this.lat}&lon=${this.lon}`;
+    query = `${this.baseURL}/geo/1.0/direct?q=${this.city},{state code},{country code}&limit={limit}&appid=${process.env.API_KEY}`;
+    return query;
   }
 
   // TODO: Create buildWeatherQuery method
 // VERY BROKEN AS WELL
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return this.buildForecastArray(coordinates);
-    //`${this.baseURL}?appid=${this.appid}`;
+    const { lat, lon } = coordinates
+    return `${this.baseURL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
   }
 
   // TODO: Create fetchAndDestructureLocationData method

@@ -1,6 +1,3 @@
-// API KEY : ea5390020b1d0c4faf5c4b067e2d21d1
-// API Route : api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
-
 import dotenv from 'dotenv';
 import express from 'express';
 dotenv.config();
@@ -14,7 +11,10 @@ const PORT = process.env.PORT || 3001;
 
 // TODO: Serve static files of entire client dist folder
 import path from 'path'
-app.use(express.static(path.join(__dirname, '../client')))
+app.use(express.static(path.join(__dirname, '../client/dist')))
+app.get('*', (_req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, '../../client/dist'));
+  });
 // TODO: Implement middleware for parsing JSON and urlencoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended : true }));
