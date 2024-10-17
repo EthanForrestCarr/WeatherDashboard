@@ -1,5 +1,7 @@
 // TODO: Define a City class with name and id properties
 
+import { fstat } from "fs";
+
 class City {
   name: string;
   id: string;
@@ -11,13 +13,16 @@ class City {
 }
 
 // TODO: Complete the HistoryService class
+
 class HistoryService {
+
   // TODO: Define a read method that reads from the searchHistory.json file
+
   private async read() {
-    const response = await path.join(__dirname, 'searchHistory.json')
-    const data = await /* file reading thingamabob */
-    return JSON.parse(data)
+    const response = await fs.readFile(path.join(__dirname, 'searchHistory.json'), 'utf-8');
+    return JSON.parse(response);
   }
+
   // TODO: Define a write method that writes the updated cities array to the searchHistory.json file
   private async write(cities: City[]) {
     const response = await path.join(__dirname, 'searchHistory.json')
