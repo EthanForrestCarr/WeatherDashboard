@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 // TODO: Define a City class with name and id properties
 
@@ -20,7 +21,7 @@ class HistoryService {
 
   private async read() {
 
-    return await fs.readFile('././ /*SEOMTHING*/ .json', {
+    return await fs.readFile('db/db.json', {
       flag: 'a+',
       encoding: 'utf8',
     });
