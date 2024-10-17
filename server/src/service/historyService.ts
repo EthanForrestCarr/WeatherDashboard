@@ -24,11 +24,13 @@ class HistoryService {
   }
 
   // TODO: Define a write method that writes the updated cities array to the searchHistory.json file
+
   private async write(cities: City[]) {
-    const response = await path.join(__dirname, 'searchHistory.json')
-    const data = await /*something*/
+    const response = JSON.stringify(cities, null, 2)
+    const data = await fs.writeFile(path.join(__dirname, 'searchHistory.json'), 'utf-8')
     return JSON.parse(data)
   }
+  
   // TODO: Define a getCities method that reads the cities from the searchHistory.json file and returns them as an array of City objects
   async getCities() {
     const response = await path.join(__dirname, 'searchHistory.json')
