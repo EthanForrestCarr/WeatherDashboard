@@ -5,7 +5,7 @@ import HistoryService from '../../service/historyService.js';
 import WeatherService from '../../service/weatherService.js';
 
 // TODO: POST Request with city name to retrieve weather data
-router.post('/', (req, res) => {
+router.post('/', (req, _res) => {
   const city = req.body;
   // TODO: GET weather data from city name
   const weatherData = WeatherService. /*SOMETHING*/ ;

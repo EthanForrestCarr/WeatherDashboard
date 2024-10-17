@@ -48,13 +48,13 @@ class WeatherService {
   }
 
   // TODO: Create buildGeocodeQuery method
-
+// VERY BROKEN
   private buildGeocodeQuery(query: string): string {
     return query //`${this.baseURL}?lat=${this.lat}&lon=${this.lon}`;
   }
 
   // TODO: Create buildWeatherQuery method
-
+// VERY BROKEN AS WELL
   private buildWeatherQuery(coordinates: Coordinates): string {
     return this.buildForecastArray(coordinates);
     //`${this.baseURL}?appid=${this.appid}`;
