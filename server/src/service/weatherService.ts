@@ -3,7 +3,28 @@ dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
 
+interface Coordinates {
+  lat: number;
+  lon: number;
+}
+
 // TODO: Define a class for the Weather object
+
+class Weather {
+  temp: number;
+  feels_like: number;
+  humidity: number;
+  description: string;
+  icon: string;
+  constructor(temp: number, feels_like: number, humidity: number, description: string, icon: string) {
+    this.temp = temp;
+    this.feels_like = feels_like;
+    this.humidity = humidity;
+    this.description = description;
+    this.icon = icon;
+  }
+}
+
 
 // TODO: Complete the WeatherService class
 class WeatherService {
