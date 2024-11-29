@@ -83,9 +83,27 @@ class WeatherService {
   }
 
   // TODO: Create fetchAndDestructureLocationData method
-  // private async fetchAndDestructureLocationData() {}
+
+  private async fetchAndDestructureLocationData() {
+    const locationData = await this.fetchLocationData(this.cityName);
+    if (locationData) {
+      return this.destructureLocationData(locationData);
+    }
+    return null;
+  }
+
   // TODO: Create fetchWeatherData method
-  // private async fetchWeatherData(coordinates: Coordinates) {}
+  
+  private async fetchWeatherData(coordinates: Coordinates): Promise<any> {
+    try {
+      const response = await axios.get(this.buildWeatherQuery(coordinates));
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      throw new Error('Failed to fetch weather data');
+    }
+  }
+
   // TODO: Build parseCurrentWeather method
   // private parseCurrentWeather(response: any) {}
   // TODO: Complete buildForecastArray method
