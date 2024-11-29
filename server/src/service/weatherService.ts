@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import axios from 'axios';
 dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
@@ -25,9 +26,10 @@ class Weather {
   }
 }
 
-
 // TODO: Complete the WeatherService class
+
 class WeatherService {
+
   // TODO: Define the baseURL, API key, and city name properties
 
   private baseURL = 'https://api.openweathermap.org/data/2.5/forecast';
@@ -40,9 +42,34 @@ class WeatherService {
   }
 
   // TODO: Create fetchLocationData method
-  // private async fetchLocationData(query: string) {}
+
+  private async fetchLocationData(query: string): Promise<Coordinates | null> {
+    try {
+      const response = await axios.get(this.geocodingURL, {
+        params: {
+          q: this.cityName,
+          appid: this.apiKey,
+        },
+      });
+      const data = response.data;
+      if (data && data.length > 0) {
+        return { lat: data[0].lat, lon: data[0].lon };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching location data:', error);
+      return null;
+    }
+  }  
+
   // TODO: Create destructureLocationData method
-  // private destructureLocationData(locationData: Coordinates): Coordinates {}
+  
+  private destructureLocationData(locationData: Coordinates): Coordinates {
+    return {
+      lat: locationData.lat,
+      lon: locationData.lon,
+    };
+  }
   // TODO: Create buildGeocodeQuery method
   // private buildGeocodeQuery(): string {}
   // TODO: Create buildWeatherQuery method
