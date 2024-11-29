@@ -63,7 +63,7 @@ class WeatherService {
   }  
 
   // TODO: Create destructureLocationData method
-  
+
   private destructureLocationData(locationData: Coordinates): Coordinates {
     return {
       lat: locationData.lat,
@@ -71,9 +71,17 @@ class WeatherService {
     };
   }
   // TODO: Create buildGeocodeQuery method
-  // private buildGeocodeQuery(): string {}
+
+  private buildGeocodeQuery(): string {
+    return `${this.geocodingURL}?q=${this.cityName}&appid=${this.apiKey}`;
+  }
+
   // TODO: Create buildWeatherQuery method
-  // private buildWeatherQuery(coordinates: Coordinates): string {}
+
+  private buildWeatherQuery(coordinates: Coordinates): string {
+    return `${this.baseURL}?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}&units=metric`;
+  }
+
   // TODO: Create fetchAndDestructureLocationData method
   // private async fetchAndDestructureLocationData() {}
   // TODO: Create fetchWeatherData method
