@@ -22,7 +22,7 @@ router.post('/', async (req: Request, res: Response) => {
 
   // TODO: save city to search history
 
-  await HistoryService.saveCity(city);
+  await HistoryService.addCity(city);
   res.json(weatherData);
 } catch (error) {
   console.error('Error getting weather data:', error);
@@ -34,7 +34,7 @@ return res.status(200).json({ message: 'Success' });
 // TODO: GET search history
 router.get('/history', async (_req: Request, res: Response) => {
   try {
-    const history = await HistoryService.getHistory();
+    const history = await HistoryService.getCities();
     res.json(history);
   } catch (error) {
     console.error('Error retrieving search history:', error);
@@ -46,7 +46,7 @@ router.get('/history', async (_req: Request, res: Response) => {
 router.delete('/history/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await HistoryService.deleteCity(id);
+    await HistoryService.removeCity(id);
     res.status(200).json({ message: `Successfully removed city with ID: ${id} from search history.` });
   } catch (error) {
     console.error('Error deleting city from search history:', error);
