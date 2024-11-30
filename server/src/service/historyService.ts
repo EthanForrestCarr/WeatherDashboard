@@ -9,18 +9,18 @@ const __dirname = path.dirname(__filename);
 
 class City {
   id: string;
-  name: string;
+  cityName: string;
 
-  constructor(name: string) {
+  constructor(cityName: string) {
     this.id = uuidv4();
-    this.name = name;
+    this.cityName = cityName;
   }
 }
 
 // TODO: Complete the HistoryService class
 
 class HistoryService {
-  private filePath = path.join(__dirname, '../../db/searchHistory.json');
+  private filePath = path.join(__dirname, '../../db/db.json');
 
   // TODO: Define a read method that reads from the searchHistory.json file
 
@@ -47,16 +47,16 @@ class HistoryService {
     return await this.read();
   }
   // TODO Define an addCity method that adds a city to the searchHistory.json file
-  async addCity(city: string): Promise<void> {
+  async addCity(cityName: string): Promise<void> {
     const cities = await this.read();
-    const newCity = new City(city);
+    const newCity = new City(cityName);
     cities.push(newCity);
     await this.write(cities);
   }
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
   async removeCity(id: string): Promise<void> {
     const cities = await this.read();
-    const updatedCities = cities.filter(city => city.id !== id);
+    const updatedCities = cities.filter(cityName => cityName.id !== id);
     await this.write(updatedCities);
   }
 }

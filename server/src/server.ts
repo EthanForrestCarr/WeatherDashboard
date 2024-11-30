@@ -1,10 +1,15 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
-dotenv.config();
+import { fileURLToPath } from 'url';
 
 // Import the routes
 import routes from './routes/index.js';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
