@@ -35,30 +35,53 @@ API Calls
 */
 
 const fetchWeather = async (cityName: string) => {
-  const response = await fetch('/api/weather/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ cityName }),
-  });
+  try {
+    const response = await fetch('/api/weather/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cityName }),
+    });
 
-  const weatherData = await response.json();
+    if (!response.ok) {
+      throw new Error('Failed to fetch weather data');
+    }
 
-  console.log('weatherData: ', weatherData);
+    const weatherData = await response.json();
 
-  renderCurrentWeather(weatherData[0]);
-  renderForecast(weatherData.slice(1));
+    console.log('weatherData: ', weatherData);
+
+    if (weatherData && weatherData.current && weatherData.forecast) {
+      renderCurrentWeather(weatherData.current);
+      renderForecast(weatherData.forecast);
+    } else {
+      throw new Error('Invalid weather data format');
+    }
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+  }
 };
 
 const fetchSearchHistory = async () => {
-  const history = await fetch('/api/weather/history', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return history;
+  try {
+    const response = await fetch('/api/weather/history', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch search history');
+    }
+
+    const history = await response.json();
+    return history;
+  } catch (error) {
+    console.error('Error fetching search history:', error);
+    return [];
+  }
 };
 
 const deleteCityFromHistory = async (id: string) => {
@@ -80,7 +103,6 @@ const renderCurrentWeather = (currentWeather: any): void => {
   const { city, date, icon, iconDescription, tempF, windSpeed, humidity } =
     currentWeather;
 
-  // convert the following to typescript
   heading.textContent = `${city} (${date})`;
   weatherIcon.setAttribute(
     'src',
@@ -99,7 +121,7 @@ const renderCurrentWeather = (currentWeather: any): void => {
   }
 };
 
-const renderForecast = (forecast: any): void => {
+const renderForecast = (forecast: any[]): void => {
   const headingCol = document.createElement('div');
   const heading = document.createElement('h4');
 
@@ -140,7 +162,7 @@ const renderForecastCard = (forecast: any) => {
 };
 
 const renderSearchHistory = async (searchHistory: any) => {
-  const historyList = await searchHistory.json();
+  const historyList = await searchHistory;
 
   if (searchHistoryContainer) {
     searchHistoryContainer.innerHTML = '';
@@ -282,8 +304,10 @@ Initial Render
 
 */
 
-const getAndRenderHistory = () =>
-  fetchSearchHistory().then(renderSearchHistory);
+const getAndRenderHistory = async () => {
+  const history = await fetchSearchHistory();
+  renderSearchHistory(history);
+};
 
 searchForm?.addEventListener('submit', handleSearchFormSubmit);
 searchHistoryContainer?.addEventListener('click', handleSearchHistoryClick);

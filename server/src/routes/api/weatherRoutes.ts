@@ -4,34 +4,27 @@ const router = Router();
 import HistoryService from '../../service/historyService.js';
 import WeatherService from '../../service/weatherService.js';
 
-// TODO: POST Request with city name to retrieve weather data
-
+// POST Request with city name to retrieve weather data
 router.post('/', async (req: Request, res: Response) => {
   try {
-
-  // TODO: GET weather data from city name
-
-  const { cityName } = req.body;
-  if (!cityName) {
-    return res.status(400).json({ message: 'City name is required' });
+    const { cityName } = req.body;
+    if (!cityName) {
+      return res.status(400).json({ message: 'City name is required' });
+    }
+    const weatherData = await WeatherService.getWeatherForCity(cityName);
+    if (!weatherData) {
+      return res.status(404).json({ message: 'City not found' });
+    }
+    await HistoryService.addCity(cityName);
+    res.json({ current: weatherData.current, forecast: weatherData.forecast });
+  } catch (error) {
+    console.error('Error getting weather data:', error);
+    res.status(500).json({ message: 'Failed to get weather data' });
   }
-  const weatherData = await WeatherService.getWeatherForCity(cityName);
-  if (!weatherData) {
-    return res.status(404).json({ message: 'City not found' });
-  }
-
-  // TODO: save city to search history
-
-  await HistoryService.addCity(cityName);
-  res.json(weatherData);
-} catch (error) {
-  console.error('Error getting weather data:', error);
-  res.status(500).json({ message: 'Failed to get weather data' });
-}
-return;
+  return;
 });
 
-// TODO: GET search history
+// GET search history
 router.get('/history', async (_req: Request, res: Response) => {
   try {
     const history = await HistoryService.getCities();
@@ -42,7 +35,7 @@ router.get('/history', async (_req: Request, res: Response) => {
   }
 });
 
-// * BONUS TODO: DELETE city from search history
+// DELETE city from search history
 router.delete('/history/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
